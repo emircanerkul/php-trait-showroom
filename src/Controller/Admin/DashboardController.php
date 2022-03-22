@@ -36,6 +36,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Traits', 'fa fa-code', TraitEntity::class);
 
         yield MenuItem::section('Administration');
-        yield MenuItem::linkToCrud('Actions', 'fa fa-gears', RepositoryEntity::class);
+        yield MenuItem::linkToRoute('Actions', 'fa fa-gears', 'admin_actions');
     }
 }
