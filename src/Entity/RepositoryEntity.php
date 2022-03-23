@@ -6,6 +6,7 @@ use App\Repository\RepositoryEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 
 #[ORM\Entity(repositoryClass: RepositoryEntityRepository::class)]
 class RepositoryEntity
@@ -15,11 +16,27 @@ class RepositoryEntity
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $url;
-
     #[ORM\OneToMany(mappedBy: 'repositoryEntity', targetEntity: TraitEntity::class)]
     private $traitEntities;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $owner;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $repository;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $version;
+
+    #[ORM\Column(type: 'datetime')]
+    #[Timestampable(on: 'create')]
+    private $created;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $lastScan;
+
+    #[ORM\Column(type: 'integer', options: ["default" => 0])]
+    private $scanCount;
 
     public function __construct()
     {
@@ -29,18 +46,6 @@ class RepositoryEntity
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
     }
 
     /**
@@ -69,6 +74,78 @@ class RepositoryEntity
                 $traitEntities->setRepositoryEntity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?string
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(string $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getRepository(): ?string
+    {
+        return $this->repository;
+    }
+
+    public function setRepository(string $repository): self
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->version;
+    }
+
+    public function setVersion(string $version): self
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getLastScan(): ?\DateTimeInterface
+    {
+        return $this->lastScan;
+    }
+
+    public function setLastScan(\DateTimeInterface $lastScan): self
+    {
+        $this->lastScan = $lastScan;
+
+        return $this;
+    }
+
+    public function getScanCount(): ?int
+    {
+        return $this->scanCount;
+    }
+
+    public function setScanCount(int $scanCount): self
+    {
+        $this->scanCount = $scanCount;
 
         return $this;
     }
