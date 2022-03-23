@@ -35,7 +35,7 @@ class RepositoryEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastScan;
 
-    #[ORM\Column(type: 'integer', options: ["default" => 0])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ["default" => 0])]
     private $scanCount;
 
     public function __construct()
@@ -148,5 +148,16 @@ class RepositoryEntity
         $this->scanCount = $scanCount;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        $string = $this->getOwner() . '/' . $this->getRepository() . '/' . $this->getVersion();
+
+        if ($this->getLastScan()) {
+            $string .= ' Latest Run: ' . $this->getLastScan()->format('Y.m.d h:i:s');
+        }
+
+        return $string;
     }
 }
