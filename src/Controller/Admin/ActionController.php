@@ -17,10 +17,6 @@ class ActionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'All repositories successfully checked.');
-
-            # @TODO Install the svn extension to get file list of repository.
-            # @WAIT https://github.com/oerdnj/deb.sury.org/issues/1743
-            # @WAIT https://github.com/drud/ddev/issues/3726
         }
 
         return $this->renderForm('action/index.html.twig', [
