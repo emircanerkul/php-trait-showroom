@@ -18,7 +18,7 @@ class TraitFinder
         ]);
     }
 
-    public function findAllFiles($user, $repository, $path, $extension = 'php', $include = 'trait'): array
+    public function findAllFiles($user, $repository, $path, $include = 'trait.php'): array
     {
         $files = [];
 
@@ -40,7 +40,7 @@ class TraitFinder
             if ($branch->type == 'tree') {
                 $files = $files + $this->findAllFiles($user, $repository, $branch->url);
             } elseif ($branch->type == 'blob' &&
-                pathinfo($branch->path, PATHINFO_EXTENSION) == $extension) {
+                strpos(strtolower($branch->path), $include) !== false) {
                     $files[] = $branch->url;
             }
         }

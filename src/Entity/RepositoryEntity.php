@@ -150,6 +150,13 @@ class RepositoryEntity
         return $this;
     }
 
+    public function increaseScanCount(): self
+    {
+        $scanCount = $this->scanCount;
+        $this->scanCount = intval($scanCount) + 1;
+        return $this;
+    }
+
     public function __toString()
     {
         $string = $this->getOwner() . '/' . $this->getRepository() . '/' . $this->getVersion();
