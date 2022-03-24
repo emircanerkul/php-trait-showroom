@@ -10,23 +10,22 @@ class TraitFinder
 
     protected $httpClient;
 
-    /** @param HttpClientInterface $httpClientInterface  */
+    /** @param HttpClientInterface $httpClientInterface */
     public function __construct(HttpClientInterface $httpClientInterface)
     {
         $this->httpClient = $httpClientInterface->withOptions([
-            'headers' => ['Authorization' => 'token '. $_ENV['GITHUB_TOKEN']]
+            'headers' => ['Authorization' => 'token ' . $_ENV['GITHUB_TOKEN']]
         ]);
     }
 
     public function findAllFiles($user, $repository, $path, $include = 'trait.php'): array
     {
         $files = [];
-
-        if (strpos($path, 'https://') !== false || strpos($path, 'http://') !== false) {
+        if (str_contains($path, 'https://') || str_contains($path, 'http://')) {
             $url = $path;
         } else {
             $url = str_replace(
-                ['%USER%','%REPOSITORY%','%PATH%'],
+                ['%USER%', '%REPOSITORY%', '%PATH%'],
                 [$user, $repository, $path],
                 self::$API_ENDPOINT
             );
@@ -41,7 +40,7 @@ class TraitFinder
                 $files = $files + $this->findAllFiles($user, $repository, $branch->url);
             } elseif ($branch->type == 'blob' &&
                 strpos(strtolower($branch->path), $include) !== false) {
-                    $files[] = $branch->url;
+                $files[] = $branch->url;
             }
         }
 
