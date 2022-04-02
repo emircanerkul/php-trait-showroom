@@ -24,7 +24,6 @@ class DashboardController extends AbstractDashboardController
         $this->router = $router;
     }
 
-
     /**
      * @Route("/", name="admin")
      */
@@ -32,7 +31,6 @@ class DashboardController extends AbstractDashboardController
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
 
-        // Option 1. Make your dashboard redirect to the same page for all users
         return $this->redirect($adminUrlGenerator->setController(RepositoryEntityCrudController::class)->generateUrl());
     }
 
@@ -53,8 +51,9 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Views');
         foreach ($this->router->getRouteCollection()->all() as $route) {
-            if (str_contains($route->getPath(), '/view/'))
+            if (str_contains($route->getPath(), '/view/')) {
                 yield MenuItem::linkToRoute($route->getDefault('title'), 'fa fa-file-invoice', $route->getDefault('route_name'));
+            }
         }
     }
 }
